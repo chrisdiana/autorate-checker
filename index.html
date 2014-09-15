@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Local Labor Rate Check</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="http://cdnjs.cloudflare.com/ajax/libs/foundation/5.3.3/css/foundation.min.css">
+</head>
+<body>
+    <div class="row">
+        <div class="large-4 columns">
+            <h4>Automotive Shop Local Labor Rate Check</h4>
+        </div>
+        <div class="large-8 columns">
+        </div>
+        <hr>
+    </div>
+
+    <div class="row">
+        <div class="large-4 columns">
+            <input id="zipcode" type="text" name="zipcode" placeholder="Zip Code">
+        </div>
+        <div class="large-3 columns">
+            <a id="checkzip" href="#" class="button alert">Check</a>
+        </div>
+        <div class="row">
+            <div class="large-8 columns">
+                <div id="rate"></div>
+                <div id="instructions">
+                    <p>Check the standard local labor rate for automotive shops in your area in by entering your ZIP code using the Edmund's API.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer class="row"></footer>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.10.2.min.js"><\/script>')</script>
+    <script>
+    $(function() {
+        var api_key = 'x6b9ec4w6fybaekx867u6k3j';
+
+        $('#checkzip').click(function(){
+            var zipcode = $('#zipcode').val();
+            var url = 'https://api.edmunds.com/v1/api/maintenance/ziplaborrate/'+zipcode+'?fmt=json&api_key='+api_key;
+            
+            $.getJSON( url, function(data) {
+                if(data.zipLaborRateHolder.length==0){
+                    $('#rate').html('<p style="color:red;">There was a problem with your request. Please enter a vaild zip code and try again.');
+                }
+                if(data.zipLaborRateHolder){
+                    var rate = data.zipLaborRateHolder[0].laborRate;
+                    $('#rate').html('<p>The local labor rate for your zipcode '+zipcode+' is:</p><h1>$'+rate+'</h1>');
+                }
+            });
+            $('#instructions').hide();
+        });
+    });
+    </script>
+</body>
+</html>
+
+    
+ 
+
+
